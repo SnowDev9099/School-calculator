@@ -6,64 +6,139 @@
   <title>Calculator</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 100px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #f4f4f9;
     }
     #calculator, #hiddenPage {
       display: none;
+      width: 100%;
+      max-width: 400px;
     }
     #calculator {
       display: block;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+      padding: 20px;
     }
     .calc-screen {
-      width: 200px;
-      height: 40px;
+      width: 100%;
+      height: 60px;
       text-align: right;
-      margin-bottom: 10px;
-      font-size: 20px;
+      padding: 15px;
+      font-size: 24px;
+      border-radius: 10px;
+      background: #eef1f5;
+      border: none;
+      margin-bottom: 20px;
+    }
+    .calc-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 10px;
     }
     .calc-buttons button {
-      width: 50px;
-      height: 50px;
-      font-size: 18px;
-      margin: 5px;
+      background: #4a90e2;
+      color: white;
+      font-size: 22px;
+      border: none;
+      border-radius: 10px;
+      padding: 15px;
+      transition: 0.3s;
+      cursor: pointer;
     }
-    #backButton {
-      display: none;
+    .calc-buttons button:hover {
+      background: #3a78c2;
+    }
+    .special-button {
+      background: #50e3c2;
+    }
+    .special-button:hover {
+      background: #3ac2a4;
     }
     #fullscreenButton, #keyboardButton {
       margin-top: 10px;
       display: block;
+      width: 100%;
+      padding: 15px;
+      border-radius: 10px;
+      background-color: #7ed321;
+      color: white;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    #fullscreenButton:hover, #keyboardButton:hover {
+      background-color: #6bb81d;
+    }
+    #hiddenPage {
+      display: none;
+    }
+    iframe {
+      width: 100%;
+      height: calc(100vh - 70px);
+      border: none;
+    }
+    #backButton {
+      display: none;
+      width: 100%;
+      padding: 15px;
+      border-radius: 10px;
+      background-color: #d0021b;
+      color: white;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    #backButton:hover {
+      background-color: #b80116;
     }
   </style>
 </head>
 <body>
-  <h1>Calculator</h1>
-  
   <div id="calculator">
     <input id="calcScreen" class="calc-screen" type="text" readonly>
     <div class="calc-buttons">
       <button onclick="addToCalc('1')">1</button>
       <button onclick="addToCalc('2')">2</button>
-      <button onclick="addToCalc('3')">3</button><br>
+      <button onclick="addToCalc('3')">3</button>
+      <button onclick="addToCalc('+')">+</button>
+      
       <button onclick="addToCalc('4')">4</button>
       <button onclick="addToCalc('5')">5</button>
-      <button onclick="addToCalc('6')">6</button><br>
+      <button onclick="addToCalc('6')">6</button>
+      <button onclick="addToCalc('-')">-</button>
+      
       <button onclick="addToCalc('7')">7</button>
       <button onclick="addToCalc('8')">8</button>
-      <button onclick="addToCalc('9')">9</button><br>
+      <button onclick="addToCalc('9')">9</button>
+      <button onclick="addToCalc('*')">*</button>
+      
       <button onclick="clearCalc()">C</button>
       <button onclick="addToCalc('0')">0</button>
-      <button onclick="checkCode()">Enter</button>
+      <button onclick="addToCalc('.')">.</button>
+      <button onclick="addToCalc('/')">/</button>
+
+      <button class="special-button" onclick="addToCalc('(')">(</button>
+      <button class="special-button" onclick="addToCalc(')')">)</button>
+      <button class="special-button" onclick="addToCalc('/')">÷</button>
+      <button class="special-button" onclick="addToCalc('%')">%</button>
+
+      <button onclick="calculate()">=</button>
+      <button id="fullscreenButton" onclick="toggleFullScreen()">Toggle Fullscreen</button>
+      <button id="keyboardButton" onclick="openKeyboard()">Open Keyboard</button>
     </div>
-    <button id="fullscreenButton" onclick="toggleFullScreen()">Toggle Fullscreen</button>
-    <button id="keyboardButton" onclick="openKeyboard()">Open Keyboard</button>
   </div>
-  
+
   <div id="hiddenPage">
-    <iframe src="https://www.example.com" width="100%" height="500px"></iframe>
-    <br>
+    <iframe id="iframePage" src="https://www.example.com"></iframe>
     <button id="backButton" onclick="backToCalculator()">Back to Calculator</button>
   </div>
 
@@ -71,7 +146,7 @@
     const code = '4479';
     let input = '';
 
-    // Add numbers to the calculator screen
+    // Add numbers and operators to the calculator screen
     function addToCalc(value) {
       input += value;
       document.getElementById('calcScreen').value = input;
@@ -83,6 +158,17 @@
       document.getElementById('calcScreen').value = '';
     }
 
+    // Calculate the result
+    function calculate() {
+      try {
+        const result = eval(input);
+        document.getElementById('calcScreen').value = result;
+        input = result.toString();
+      } catch (e) {
+        document.getElementById('calcScreen').value = 'Error';
+      }
+    }
+
     // Check if the code is correct and show the hidden page
     function checkCode() {
       if (input === code) {
@@ -90,6 +176,8 @@
         document.getElementById('calculator').style.display = 'none';
         document.getElementById('hiddenPage').style.display = 'block';
         document.getElementById('backButton').style.display = 'block';
+        document.getElementById('iframePage').focus();
+        document.documentElement.requestFullscreen();
       }
     }
 

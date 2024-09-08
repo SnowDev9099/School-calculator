@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+    }
+    #calculator, #hiddenPage {
+      display: none;
+    }
+    #calculator {
+      display: block;
+    }
+    .calc-screen {
+      width: 200px;
+      height: 40px;
+      text-align: right;
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+    .calc-buttons button {
+      width: 50px;
+      height: 50px;
+      font-size: 18px;
+      margin: 5px;
+    }
+    #backButton {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Calculator</h1>
+  
+  <div id="calculator">
+    <input id="calcScreen" class="calc-screen" type="text" readonly>
+    <div class="calc-buttons">
+      <button onclick="addToCalc('1')">1</button>
+      <button onclick="addToCalc('2')">2</button>
+      <button onclick="addToCalc('3')">3</button><br>
+      <button onclick="addToCalc('4')">4</button>
+      <button onclick="addToCalc('5')">5</button>
+      <button onclick="addToCalc('6')">6</button><br>
+      <button onclick="addToCalc('7')">7</button>
+      <button onclick="addToCalc('8')">8</button>
+      <button onclick="addToCalc('9')">9</button><br>
+      <button onclick="addToCalc('0')">0</button>
+      <button onclick="clearCalc()">C</button>
+      <button onclick="submit

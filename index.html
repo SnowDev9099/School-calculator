@@ -32,6 +32,10 @@
     #backButton {
       display: none;
     }
+    #fullscreenButton, #keyboardButton {
+      margin-top: 10px;
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -49,6 +53,79 @@
       <button onclick="addToCalc('7')">7</button>
       <button onclick="addToCalc('8')">8</button>
       <button onclick="addToCalc('9')">9</button><br>
-      <button onclick="addToCalc('0')">0</button>
       <button onclick="clearCalc()">C</button>
-      <button onclick="submit
+      <button onclick="addToCalc('0')">0</button>
+      <button onclick="checkCode()">Enter</button>
+    </div>
+    <button id="fullscreenButton" onclick="toggleFullScreen()">Toggle Fullscreen</button>
+    <button id="keyboardButton" onclick="openKeyboard()">Open Keyboard</button>
+  </div>
+  
+  <div id="hiddenPage">
+    <iframe src="https://www.example.com" width="100%" height="500px"></iframe>
+    <br>
+    <button id="backButton" onclick="backToCalculator()">Back to Calculator</button>
+  </div>
+
+  <script>
+    const code = '4479';
+    let input = '';
+
+    // Add numbers to the calculator screen
+    function addToCalc(value) {
+      input += value;
+      document.getElementById('calcScreen').value = input;
+    }
+
+    // Clear the calculator screen
+    function clearCalc() {
+      input = '';
+      document.getElementById('calcScreen').value = '';
+    }
+
+    // Check if the code is correct and show the hidden page
+    function checkCode() {
+      if (input === code) {
+        document.title = "Google";
+        document.getElementById('calculator').style.display = 'none';
+        document.getElementById('hiddenPage').style.display = 'block';
+        document.getElementById('backButton').style.display = 'block';
+      }
+    }
+
+    // Return to the calculator
+    function backToCalculator() {
+      document.title = "Calculator";
+      document.getElementById('calculator').style.display = 'block';
+      document.getElementById('hiddenPage').style.display = 'none';
+      document.getElementById('backButton').style.display = 'none';
+      clearCalc();
+    }
+
+    // Toggle full screen
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+
+    // Open the keyboard for devices that support it
+    function openKeyboard() {
+      document.getElementById('calcScreen').focus();
+    }
+
+    // Listen for T+P key combination to go back to the calculator
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 't' || event.key === 'T') {
+        document.addEventListener('keydown', function(event) {
+          if (event.key === 'p' || event.key === 'P') {
+            backToCalculator();
+          }
+        }, { once: true });
+      }
+    });
+  </script>
+</body>
+</html>

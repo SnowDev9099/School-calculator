@@ -14,11 +14,13 @@
       margin: 0;
       background: #f4f4f9;
     }
+
     #calculator, #hiddenPage {
       display: none;
       width: 100%;
       max-width: 400px;
     }
+
     #calculator {
       display: block;
       background: #fff;
@@ -26,6 +28,7 @@
       box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
       padding: 20px;
     }
+
     .calc-screen {
       width: 100%;
       height: 60px;
@@ -37,182 +40,66 @@
       border: none;
       margin-bottom: 20px;
     }
+
     .calc-buttons {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      grid-gap: 10px;
+      gap: 5px;
     }
-    .calc-buttons button {
-      background: #4a90e2;
-      color: white;
-      font-size: 22px;
+
+    .calc-button {
+      background: #f4f4f9;
       border: none;
       border-radius: 10px;
-      padding: 15px;
-      transition: 0.3s;
-      cursor: pointer;
-    }
-    .calc-buttons button:hover {
-      background: #3a78c2;
-    }
-    .special-button {
-      background: #50e3c2;
-    }
-    .special-button:hover {
-      background: #3ac2a4;
-    }
-    #fullscreenButton, #keyboardButton {
-      margin-top: 10px;
-      display: block;
-      width: 100%;
-      padding: 15px;
-      border-radius: 10px;
-      background-color: #7ed321;
-      color: white;
-      border: none;
       font-size: 18px;
+      padding: 15px;
       cursor: pointer;
-      transition: 0.3s;
     }
-    #fullscreenButton:hover, #keyboardButton:hover {
-      background-color: #6bb81d;
+
+    .calc-button:hover {
+      background: #eef1f5;
     }
+
     #hiddenPage {
       display: none;
     }
-    iframe {
-      width: 100%;
-      height: calc(100vh - 70px);
-      border: none;
-    }
-    #backButton {
-      display: none;
-      width: 100%;
-      padding: 15px;
-      border-radius: 10px;
-      background-color: #d0021b;
-      color: white;
-      border: none;
-      font-size: 18px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    #backButton:hover {
-      background-color: #b80116;
+
+    #hiddenPage-content {
+      padding: 20px;
     }
   </style>
 </head>
 <body>
   <div id="calculator">
-    <input id="calcScreen" class="calc-screen" type="text" readonly>
+    <input class="calc-screen" type="text" readonly>
     <div class="calc-buttons">
-      <button onclick="addToCalc('1')">1</button>
-      <button onclick="addToCalc('2')">2</button>
-      <button onclick="addToCalc('3')">3</button>
-      <button onclick="addToCalc('+')">+</button>
-      
-      <button onclick="addToCalc('4')">4</button>
-      <button onclick="addToCalc('5')">5</button>
-      <button onclick="addToCalc('6')">6</button>
-      <button onclick="addToCalc('-')">-</button>
-      
-      <button onclick="addToCalc('7')">7</button>
-      <button onclick="addToCalc('8')">8</button>
-      <button onclick="addToCalc('9')">9</button>
-      <button onclick="addToCalc('*')">*</button>
-      
-      <button onclick="clearCalc()">C</button>
-      <button onclick="addToCalc('0')">0</button>
-      <button onclick="addToCalc('.')">.</button>
-      <button onclick="addToCalc('/')">/</button>
-
-      <button class="special-button" onclick="addToCalc('(')">(</button>
-      <button class="special-button" onclick="addToCalc(')')">)</button>
-      <button class="special-button" onclick="addToCalc('/')">÷</button>
-      <button class="special-button" onclick="addToCalc('%')">%</button>
-
-      <button onclick="calculate()">=</button>
-      <button id="fullscreenButton" onclick="toggleFullScreen()">Toggle Fullscreen</button>
-      <button id="keyboardButton" onclick="openKeyboard()">Open Keyboard</button>
+      <button class="calc-button" value="7">7</button>
+      <button class="calc-button" value="8">8</button>
+      <button class="calc-button" value="9">9</button>
+      <button class="calc-button" value="4">4</button>
+      <button class="calc-button" value="5">5</button>
+      <button class="calc-button" value="6">6</button>
+      <button class="calc-button" value="1">1</button>
+      <button class="calc-button" value="2">2</button>
+      <button class="calc-button" value="3">3</button>
+      <button class="calc-button" value="0">0</button>
+      <button class="calc-button" value=".">.</button>
+      <button class="calc-button" value="+">+</button>
+      <button class="calc-button" value="-">-</button>
+      <button class="calc-button" value="*">*</button>
+      <button class="calc-button" value="/">/</button>
+      <button id="clear" class="calc-button" value="C">C</button>
+      <button id="equal" class="calc-button" value="=">=</button>
     </div>
   </div>
-
   <div id="hiddenPage">
-    <iframe id="iframePage" src="https://www.example.com"></iframe>
-    <button id="backButton" onclick="backToCalculator()">Back to Calculator</button>
+    <div id="hiddenPage-content">
+      <!-- Your hidden page content goes here -->
+    </div>
   </div>
-
   <script>
-    const code = '4479';
-    let input = '';
-
-    // Add numbers and operators to the calculator screen
-    function addToCalc(value) {
-      input += value;
-      document.getElementById('calcScreen').value = input;
-    }
-
-    // Clear the calculator screen
-    function clearCalc() {
-      input = '';
-      document.getElementById('calcScreen').value = '';
-    }
-
-    // Calculate the result
-    function calculate() {
-      try {
-        const result = eval(input);
-        document.getElementById('calcScreen').value = result;
-        input = result.toString();
-      } catch (e) {
-        document.getElementById('calcScreen').value = 'Error';
-      }
-    }
-
-    // Check if the code is correct and show the hidden page
-    function checkCode() {
-      if (input === code) {
-        document.title = "Google";
-        document.getElementById('calculator').style.display = 'none';
-        document.getElementById('hiddenPage').style.display = 'block';
-        document.getElementById('backButton').style.display = 'block';
-        document.getElementById('iframePage').focus();
-        document.documentElement.requestFullscreen();
-      }
-    }
-
-    // Return to the calculator
-    function backToCalculator() {
-      document.title = "Calculator";
-      document.getElementById('calculator').style.display = 'block';
-      document.getElementById('hiddenPage').style.display = 'none';
-      document.getElementById('backButton').style.display = 'none';
-      clearCalc();
-    }
-
-    // Toggle full screen
-    function toggleFullScreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-      } else if (document.exitFullscreen) {
-        document.exitFullscreen();
-      }
-    }
-
-    // Open the keyboard for devices that support it
-    function openKeyboard() {
-      document.getElementById('calcScreen').focus();
-    }
-
-    // Listen for T+P key combination to go back to the calculator
-    document.addEventListener('keydown', function(event) {
-      if (event.key === 't' || event.key === 'T') {
-        document.addEventListener('keydown', function(event) {
-          if (event.key === 'p' || event.key === 'P') {
-            backToCalculator();
-          }
-        }, { once: true });
-      }
+    document.getElementById('showHiddenPageButton').addEventListener('click', function() {
+      document.getElementById('hiddenPage').style.display = 'block';
     });
   </script>
 </body>
